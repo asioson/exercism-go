@@ -24,20 +24,14 @@ func Frequency(s string) FreqMap {
 // the contents of the shared map is transferred to an instance of FreqMap
 // which is then returned as a result
 func ConcurrentFrequency(s []string) FreqMap {
-    sm := sync.Map{}
+    m := FreqMap{}
     wg := sync.WaitGroup{}
     mutex := sync.Mutex{}
     freqCount :=  func(lc *sync.Mutex, wg *sync.WaitGroup, t string) {
         defer wg.Done()
         for _, c := range t {
             lc.Lock()
-            v, ok := sm.Load(c) 
-            if ok {
-                count, _ := v.(int)
-                sm.Store(c,count+1)
-            } else {
-                sm.Store(c,1)
-            }
+            m[c] += 1
             lc.Unlock()
         }
     }
@@ -46,12 +40,5 @@ func ConcurrentFrequency(s []string) FreqMap {
         go freqCount(&mutex, &wg, s[i])
     }
     wg.Wait()
-    m := FreqMap{}
-    sm.Range(func(k, v interface {}) bool {
-        count, _ := v.(int)
-        key, _ := k.(rune)
-        m[key] = count 
-        return true
-    })
     return m
 }
