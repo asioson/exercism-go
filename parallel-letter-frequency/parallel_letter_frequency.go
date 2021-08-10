@@ -19,10 +19,9 @@ func Frequency(s string) FreqMap {
 }
 
 // CuncurrentFrequency takes in an array of strings and do frequency count of
-// characters in each in parallel using a shared map (sync.Map).  After the
+// characters in each in parallel using a map.  After the
 // the parallel go routines are done with their respective frequency counts
-// the contents of the shared map is transferred to an instance of FreqMap
-// which is then returned as a result
+// the contents of the map is returned as result.
 func ConcurrentFrequency(s []string) FreqMap {
     m := FreqMap{}
     wg := sync.WaitGroup{}
