@@ -156,4 +156,22 @@ var tests = []wordyTest{
 		false,
 		0,
 	},
+	{
+		"divide by zero",
+		"What is 10 divided by 0?",
+		false,
+		0,
+	},
+	{
+		"test raise to positive exponent",
+		"What is 2 raised to the 5th power?",
+		true,
+		32,
+	},
+	{
+		"test raise to 0",
+		"What is 3 raised to the 0th power?",
+		true,
+		1,
+	},
 }

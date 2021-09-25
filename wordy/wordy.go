@@ -21,6 +21,9 @@ func Answer(question string) (int, bool) {
     data = strings.Replace(data,"minus","-", -1)
     data = strings.Replace(data,"multiplied by","*", -1)
     data = strings.Replace(data,"divided by","/", -1)
+    data = strings.Replace(data,"raised to the","^", -1)
+    data = strings.Replace(data,"th power","", -1)
+
     parsedData := (strings.Split(data," "))
     m := len(parsedData)
     if m % 2 == 0 || parsedData[0] == "+" || parsedData[0] == "-" {
@@ -40,7 +43,22 @@ func Answer(question string) (int, bool) {
             case "+" :  x += y
             case "-" :  x -= y
             case "*" :  x *= y
-            case "/" :  x /= y
+            case "/" :  
+                if y == 0 {
+                    return 0, false
+                }
+                x /= y
+            case "^" :
+                if y < 0 {
+                    return 0, false
+                } else if y == 0 {
+                    x = 1
+                } else {
+                    tx := x
+                    for j := 0; j < y-1; j++ {
+                        x *= tx
+                    }
+                }
             default:
                 return 0, false
             }
