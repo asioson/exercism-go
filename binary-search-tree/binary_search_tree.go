@@ -2,9 +2,9 @@
 package binarysearchtree
 
 type SearchTreeData struct {
-	left  *SearchTreeData
-	data  int
-	right *SearchTreeData
+    left  *SearchTreeData
+    data  int
+    right *SearchTreeData
 }
 
 // NewBst creates and returns a new SearchTreeData.
@@ -46,7 +46,7 @@ func (std *SearchTreeData) MapString(f func(int) string) (result []string) {
         result = append(result, temp ...)
         return result
     }
-	return []string{}
+    return []string{}
 }
 
 // MapInt returns the ordered contents of SearchTreeData as an []int.
@@ -61,5 +61,5 @@ func (std *SearchTreeData) MapInt(f func(int) int) (result []int) {
         result = append(result, temp ...)
         return result
     }
-	return []int{}
+    return []int{}
 }
