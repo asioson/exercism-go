@@ -1,0 +1,128 @@
+package linkedlist
+
+import "errors"
+
+// Define List and Node types here.
+
+type Node struct {
+	Val        interface{}
+	next, prev *Node
+}
+
+type List struct {
+	first, last *Node
+}
+
+var ErrEmptyList = errors.New("empty list")
+
+func NewList(args ...interface{}) (l *List) {
+	l = new(List)
+	for _, v := range args {
+		(*l).PushBack(v)
+	}
+	return l
+}
+
+func (n *Node) Next() *Node {
+	if n == nil {
+		return nil
+	}
+	return (*n).next
+}
+
+func (n *Node) Prev() *Node {
+	if n == nil {
+		return nil
+	}
+	return (*n).prev
+}
+
+func (l *List) PushFront(v interface{}) {
+	item := new(Node)
+	(*item).Val = v
+	if l.First() == nil {
+		(*l).first = item
+		(*l).last = item
+	} else {
+		(*item).next = l.First()
+		(*l.First()).prev = item
+		(*l).first = item
+	}
+}
+
+func (l *List) PushBack(v interface{}) {
+	item := new(Node)
+	(*item).Val = v
+	if l.Last() == nil {
+		(*l).last = item
+		(*l).first = item
+	} else {
+		(*item).prev = l.Last()
+		(*l.Last()).next = item
+		(*l).last = item
+	}
+}
+
+func (l *List) PopFront() (interface{}, error) {
+	if l == nil {
+		return nil, ErrEmptyList
+	} else {
+		if l.First() == nil {
+			return nil, ErrEmptyList
+		} else {
+			item := l.First()
+			if l.First() == l.Last() {
+				(*l).first = nil
+				(*l).last = nil
+			} else {
+				(*l).first = l.First().Next()
+				(*l.First()).prev = nil
+			}
+			return (*item).Val, nil
+		}
+	}
+}
+
+func (l *List) PopBack() (interface{}, error) {
+	if l == nil {
+		return nil, ErrEmptyList
+	} else {
+		if l.Last() == nil {
+			return nil, ErrEmptyList
+		} else {
+			item := l.Last()
+			if l.First() == l.Last() {
+				(*l).first = nil
+				(*l).last = nil
+			} else {
+				(*l).last = l.Last().Prev()
+				(*l.Last()).next = nil
+			}
+			return (*item).Val, nil
+		}
+	}
+}
+
+func (l *List) Reverse() {
+	if l == nil {
+		return
+	}
+	item := l.First()
+	if item == nil {
+		return
+	}
+	for item != l.Last() {
+		(*item).next, (*item).prev = item.Prev(), item.Next()
+		item = item.Prev()
+	}
+	(*item).next, (*item).prev = item.Prev(), item.Next()
+	(*l).first, (*l).last = l.Last(), l.First()
+}
+
+func (l *List) First() *Node {
+	return (*l).first
+}
+
+func (l *List) Last() *Node {
+	return (*l).last
+}
