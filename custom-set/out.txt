@@ -1,0 +1,556 @@
+=== RUN   TestNew
+--- PASS: TestNew (0.00s)
+=== RUN   TestNewFromSlice
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a a]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+NewFromSlice {"a", "b"} [a b]
+--- PASS: TestNewFromSlice (0.00s)
+=== RUN   TestIsEmpty
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a]
+--- PASS: TestIsEmpty (0.00s)
+=== RUN   TestHas
+NewFromSlice {} []
+{} has a ok false v false
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+{"a", "b", "c"} has a ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+{"a", "b", "c"} has d ok false v false
+--- PASS: TestHas (0.00s)
+=== RUN   TestSubset
+NewFromSlice {} []
+NewFromSlice {} []
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a]
+NewFromSlice {} []
+{} has a ok false v false
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+{"a", "b", "c"} has a ok true v true
+{"a", "b", "c"} has b ok true v true
+{"a", "b", "c"} has c ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[] map[] d
+*** end &[d] map[d:true] d
+*** start &[d] map[d:true] a
+*** end &[d a] map[a:true d:true] a
+*** start &[d a] map[a:true d:true] b
+*** end &[d a b] map[a:true b:true d:true] b
+*** start &[d a b] map[a:true b:true d:true] c
+*** end &[d a b c] map[a:true b:true c:true d:true] c
+NewFromSlice {"d", "a", "b", "c"} [d a b c]
+{"d", "a", "b", "c"} has a ok true v true
+{"d", "a", "b", "c"} has b ok true v true
+{"d", "a", "b", "c"} has c ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[] map[] d
+*** end &[d] map[d:true] d
+*** start &[d] map[d:true] a
+*** end &[d a] map[a:true d:true] a
+*** start &[d a] map[a:true d:true] c
+*** end &[d a c] map[a:true c:true d:true] c
+NewFromSlice {"d", "a", "c"} [d a c]
+{"d", "a", "c"} has a ok true v true
+{"d", "a", "c"} has b ok false v false
+--- PASS: TestSubset (0.00s)
+=== RUN   TestDisjoint
+NewFromSlice {} []
+NewFromSlice {} []
+{} {} intersection = {}
+&[] &[] true {}
+&[] &[] true
+{} {} intersection = {}
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a]
+{} {"a"} intersection = {}
+&[] &[a] true {}
+{} has a ok false v false
+&[a] &[] false
+{} {"a"} intersection = {}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+NewFromSlice {"a"} [a]
+NewFromSlice {} []
+{} has a ok false v false
+{} has a ok false v false
+{"a"} {} intersection = {}
+&[a] &[] false {}
+&[] &[a] true
+{} has a ok false v false
+{"a"} {} intersection = {}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+NewFromSlice {"a", "b"} [a b]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+*** start &[b] map[b:true] c
+*** end &[b c] map[b:true c:true] c
+NewFromSlice {"b", "c"} [b c]
+{"b", "c"} has a ok false v false
+{"b", "c"} has a ok false v false
+{"b", "c"} has b ok true v true
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+{"a", "b"} {"b", "c"} intersection = {"b"}
+&[a b] &[b c] false {"b"}
+{"a", "b"} has b ok true v true
+{"a", "b"} has c ok false v false
+&[b c] &[a b] false
+{"b", "c"} has a ok false v false
+{"b", "c"} has b ok true v true
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+{"a", "b"} {"b", "c"} intersection = {"b"}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+NewFromSlice {"a", "b"} [a b]
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[c] map[c:true] d
+*** end &[c d] map[c:true d:true] d
+NewFromSlice {"c", "d"} [c d]
+{"c", "d"} has a ok false v false
+{"c", "d"} has a ok false v false
+{"c", "d"} has b ok false v false
+{"a", "b"} {"c", "d"} intersection = {}
+&[a b] &[c d] false {}
+{"a", "b"} has c ok false v false
+&[c d] &[a b] false
+{"c", "d"} has a ok false v false
+{"c", "d"} has b ok false v false
+{"a", "b"} {"c", "d"} intersection = {}
+--- PASS: TestDisjoint (0.00s)
+=== RUN   TestEqual
+NewFromSlice {} []
+NewFromSlice {} []
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+{} has a ok false v false
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+NewFromSlice {} []
+{} has a ok false v false
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+NewFromSlice {"a", "b"} [a b]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+*** start &[b] map[b:true] a
+*** end &[b a] map[a:true b:true] a
+NewFromSlice {"b", "a"} [b a]
+{"b", "a"} has a ok true v true
+{"b", "a"} has b ok true v true
+{"a", "b"} has b ok true v true
+{"a", "b"} has a ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] d
+*** end &[a b d] map[a:true b:true d:true] d
+NewFromSlice {"a", "b", "d"} [a b d]
+{"a", "b", "d"} has a ok true v true
+{"a", "b", "d"} has b ok true v true
+{"a", "b", "d"} has c ok false v false
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+NewFromSlice {"a", "b", "c", "d"} [a b c d]
+{"a", "b", "c", "d"} has a ok true v true
+{"a", "b", "c", "d"} has b ok true v true
+{"a", "b", "c", "d"} has c ok true v true
+{"a", "b", "c"} has a ok true v true
+{"a", "b", "c"} has b ok true v true
+{"a", "b", "c"} has c ok true v true
+{"a", "b", "c"} has d ok false v false
+--- PASS: TestEqual (0.00s)
+=== RUN   TestAdd
+NewFromSlice {} []
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+NewFromSlice {"c"} [c]
+{"c"} has c ok true v true
+{"c"} has c ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] d
+*** end &[a b d] map[a:true b:true d:true] d
+NewFromSlice {"a", "b", "d"} [a b d]
+*** start &[a b d] map[a:true b:true d:true] c
+*** end &[a b d c] map[a:true b:true c:true d:true] c
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+NewFromSlice {"a", "b", "c", "d"} [a b c d]
+{"a", "b", "c", "d"} has a ok true v true
+{"a", "b", "c", "d"} has b ok true v true
+{"a", "b", "c", "d"} has d ok true v true
+{"a", "b", "c", "d"} has c ok true v true
+{"a", "b", "d", "c"} has a ok true v true
+{"a", "b", "d", "c"} has b ok true v true
+{"a", "b", "d", "c"} has c ok true v true
+{"a", "b", "d", "c"} has d ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[a b c] map[a:true b:true c:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+{"a", "b", "c"} has a ok true v true
+{"a", "b", "c"} has b ok true v true
+{"a", "b", "c"} has c ok true v true
+{"a", "b", "c"} has a ok true v true
+{"a", "b", "c"} has b ok true v true
+{"a", "b", "c"} has c ok true v true
+--- PASS: TestAdd (0.00s)
+=== RUN   TestIntersection
+NewFromSlice {} []
+NewFromSlice {} []
+NewFromSlice {} []
+{} {} intersection = {}
+NewFromSlice {} []
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[c] map[c:true] b
+*** end &[c b] map[b:true c:true] b
+*** start &[c b] map[b:true c:true] e
+*** end &[c b e] map[b:true c:true e:true] e
+NewFromSlice {"c", "b", "e"} [c b e]
+NewFromSlice {} []
+{} {"c", "b", "e"} intersection = {}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+NewFromSlice {"a", "b", "c", "d"} [a b c d]
+NewFromSlice {} []
+NewFromSlice {} []
+{} has a ok false v false
+{} has b ok false v false
+{} has c ok false v false
+{} has d ok false v false
+{"a", "b", "c", "d"} {} intersection = {}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+NewFromSlice {"a", "b", "c"} [a b c]
+*** start &[] map[] d
+*** end &[d] map[d:true] d
+*** start &[d] map[d:true] e
+*** end &[d e] map[d:true e:true] e
+*** start &[d e] map[d:true e:true] f
+*** end &[d e f] map[d:true e:true f:true] f
+NewFromSlice {"d", "e", "f"} [d e f]
+NewFromSlice {} []
+{"d", "e", "f"} has a ok false v false
+{"d", "e", "f"} has b ok false v false
+{"d", "e", "f"} has c ok false v false
+{"a", "b", "c"} {"d", "e", "f"} intersection = {}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+NewFromSlice {"a", "b", "c", "d"} [a b c d]
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[c] map[c:true] b
+*** end &[c b] map[b:true c:true] b
+*** start &[c b] map[b:true c:true] e
+*** end &[c b e] map[b:true c:true e:true] e
+NewFromSlice {"c", "b", "e"} [c b e]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+*** start &[b] map[b:true] c
+*** end &[b c] map[b:true c:true] c
+NewFromSlice {"b", "c"} [b c]
+{"c", "b", "e"} has a ok false v false
+{"c", "b", "e"} has b ok true v true
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+{"c", "b", "e"} has c ok true v true
+*** start &[b] map[b:true] c
+*** end &[b c] map[b:true c:true] c
+{"c", "b", "e"} has d ok false v false
+{"a", "b", "c", "d"} {"c", "b", "e"} intersection = {"b", "c"}
+{"b", "c"} has b ok true v true
+{"b", "c"} has c ok true v true
+{"b", "c"} has b ok true v true
+{"b", "c"} has c ok true v true
+--- PASS: TestIntersection (0.00s)
+=== RUN   TestDifference
+NewFromSlice {} []
+NewFromSlice {} []
+NewFromSlice {} []
+{} {} difference = {}
+NewFromSlice {} []
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[c] map[c:true] b
+*** end &[c b] map[b:true c:true] b
+*** start &[c b] map[b:true c:true] e
+*** end &[c b e] map[b:true c:true e:true] e
+NewFromSlice {"c", "b", "e"} [c b e]
+NewFromSlice {} []
+{} {"c", "b", "e"} difference = {}
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+NewFromSlice {"a", "b", "c", "d"} [a b c d]
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+NewFromSlice {"a", "b", "c", "d"} [a b c d]
+{} has a ok false v false
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+{} has b ok false v false
+*** start &[a] map[a:true] b
+*** end &[a b] map[a:true b:true] b
+{} has c ok false v false
+*** start &[a b] map[a:true b:true] c
+*** end &[a b c] map[a:true b:true c:true] c
+{} has d ok false v false
+*** start &[a b c] map[a:true b:true c:true] d
+*** end &[a b c d] map[a:true b:true c:true d:true] d
+{"a", "b", "c", "d"} {} difference = {"a", "b", "c", "d"}
+{"a", "b", "c", "d"} has a ok true v true
+{"a", "b", "c", "d"} has b ok true v true
+{"a", "b", "c", "d"} has c ok true v true
+{"a", "b", "c", "d"} has d ok true v true
+{"a", "b", "c", "d"} has a ok true v true
+{"a", "b", "c", "d"} has b ok true v true
+{"a", "b", "c", "d"} has c ok true v true
+{"a", "b", "c", "d"} has d ok true v true
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[c] map[c:true] b
+*** end &[c b] map[b:true c:true] b
+*** start &[c b] map[b:true c:true] a
+*** end &[c b a] map[a:true b:true c:true] a
+NewFromSlice {"c", "b", "a"} [c b a]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+*** start &[b] map[b:true] d
+*** end &[b d] map[b:true d:true] d
+NewFromSlice {"b", "d"} [b d]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] c
+*** end &[a c] map[a:true c:true] c
+NewFromSlice {"a", "c"} [a c]
+{"b", "d"} has c ok false v false
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+{"b", "d"} has b ok true v true
+{"b", "d"} has a ok false v false
+*** start &[c] map[c:true] a
+*** end &[c a] map[a:true c:true] a
+{"c", "b", "a"} {"b", "d"} difference = {"c", "a"}
+{"a", "c"} has c ok true v true
+{"a", "c"} has a ok true v true
+{"c", "a"} has a ok true v true
+{"c", "a"} has c ok true v true
+--- PASS: TestDifference (0.00s)
+=== RUN   TestUnion
+NewFromSlice {} []
+NewFromSlice {} []
+NewFromSlice {} []
+{} {} union = {}
+NewFromSlice {} []
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+NewFromSlice {"b"} [b]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+NewFromSlice {"b"} [b]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+{} {"b"} union = {"b"}
+{"b"} has b ok true v true
+{"b"} has b ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] c
+*** end &[a c] map[a:true c:true] c
+NewFromSlice {"a", "c"} [a c]
+NewFromSlice {} []
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] c
+*** end &[a c] map[a:true c:true] c
+NewFromSlice {"a", "c"} [a c]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] c
+*** end &[a c] map[a:true c:true] c
+{"a", "c"} {} union = {"a", "c"}
+{"a", "c"} has a ok true v true
+{"a", "c"} has c ok true v true
+{"a", "c"} has a ok true v true
+{"a", "c"} has c ok true v true
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] c
+*** end &[a c] map[a:true c:true] c
+NewFromSlice {"a", "c"} [a c]
+*** start &[] map[] b
+*** end &[b] map[b:true] b
+*** start &[b] map[b:true] c
+*** end &[b c] map[b:true c:true] c
+NewFromSlice {"b", "c"} [b c]
+*** start &[] map[] c
+*** end &[c] map[c:true] c
+*** start &[c] map[c:true] b
+*** end &[c b] map[b:true c:true] b
+*** start &[c b] map[b:true c:true] a
+*** end &[c b a] map[a:true b:true c:true] a
+NewFromSlice {"c", "b", "a"} [c b a]
+*** start &[] map[] a
+*** end &[a] map[a:true] a
+*** start &[a] map[a:true] c
+*** end &[a c] map[a:true c:true] c
+*** start &[a c] map[a:true c:true] b
+*** end &[a c b] map[a:true b:true c:true] b
+*** start &[a c b] map[a:true b:true c:true] c
+*** end &[a c b] map[a:true b:true c:true] c
+{"a", "c"} {"b", "c"} union = {"a", "c", "b"}
+{"c", "b", "a"} has a ok true v true
+{"c", "b", "a"} has c ok true v true
+{"c", "b", "a"} has b ok true v true
+{"a", "c", "b"} has c ok true v true
+{"a", "c", "b"} has b ok true v true
+{"a", "c", "b"} has a ok true v true
+--- PASS: TestUnion (0.00s)
+PASS
+ok  	stringset	0.009s
