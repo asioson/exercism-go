@@ -1,0 +1,81 @@
+package dominoes
+
+import "fmt"
+
+// Define the Domino type here.
+type Domino [2]int
+
+const ps = 0 // position
+const lk = 1 // link
+const sz = 2 // size
+
+func nextCandidates(input []Domino, soln [][2]int, k int) [][2]int {
+	cand := [][2]int{}
+	for i, d := range input {
+		found := false
+		for _, v := range soln {
+			if v[ps] == i {
+				found = true
+				break
+			}
+		}
+		if !found {
+			fmt.Println("check:", input[i])
+			last := input[soln[k-1][ps]]
+			if last[soln[k-1][lk]] == d[0] {
+				cand = append(cand, [2]int{i, 1})
+			} else if last[soln[k-1][lk]] == d[1] {
+				cand = append(cand, [2]int{i, 0})
+			}
+			fmt.Println("cand", cand)
+		}
+	}
+	return cand
+}
+
+func Solve(input []Domino) ([][2]int, bool) {
+	n := len(input)
+	fmt.Println("***", input, n)
+	soln := [][2]int{}
+	stack := [][3]int{{0, 1, 1}}
+	for len(stack) > 0 {
+		fmt.Println("*** stack [before]", stack)
+		item := stack[0]
+		stack = stack[1:]
+		fmt.Println("*** stack [after]", stack)
+		pos, link, k := item[ps], item[lk], item[sz]
+		fmt.Println("*** pos =", pos, " link =", link, " k =", k)
+		soln = append(soln[:k-1], [2]int{pos, link})
+		fmt.Println("*** soln =", soln)
+		if k == n {
+			return soln, true
+		} else {
+			for _, i := range nextCandidates(input, soln, k) {
+				fmt.Println("*** item =", i)
+				stack = append([][3]int{{i[ps], i[lk], k + 1}}, stack...)
+			}
+		}
+	}
+	return soln, false
+}
+
+func MakeChain(input []Domino) ([]Domino, bool) {
+	chain := []Domino{}
+	n := len(input)
+	if n == 0 {
+		return input, true
+	}
+	fmt.Println("*** chain", chain)
+	if sequence, ok := Solve(input); ok {
+		fmt.Println("*** sequence", sequence)
+		for _, s := range sequence {
+			fmt.Println("*** s", s)
+			chain = append(chain, Domino{input[s[ps]][1-s[lk]], input[s[ps]][s[lk]]})
+			fmt.Println("*** chain", chain)
+		}
+		if chain[0][0] == chain[n-1][1] {
+			return chain, true
+		}
+	}
+	return []Domino{}, false
+}
